@@ -1,0 +1,37 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-2xl shadow-md w-80">
+    <h1 class="text-xl font-bold mb-6 text-center">Login</h1>
+
+    <form (ngSubmit)="onSubmit()">
+      <input
+        class="w-full mb-3 p-2 border rounded"
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+        [(ngModel)]="email"
+      />
+
+      <input
+        class="w-full mb-3 p-2 border rounded"
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+        [(ngModel)]="password"
+      />
+
+      <button
+        class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        type="submit"
+        [disabled]="loading()"
+      >
+        {{ loading() ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    @if (error()) {
+      <p class="text-red-500 text-center mt-4">{{ error() }}</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-gray-800 text-white p-4">
+    <h2 class="text-xl font-bold mb-4">User</h2>
+    <ul>
+      <li class="mb-2"><a routerLink="/user">Dashboard</a></li>
+      <li><a (click)="$any(window).auth && $any(window).auth.logout()">Logout</a></li>
+    </ul>
+  </aside>
+
+  <section class="flex-1 p-6 bg-gray-50">
+    <router-outlet></router-outlet>
+  </section>
+</div>
