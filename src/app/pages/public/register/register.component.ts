@@ -9,23 +9,44 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-register',
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-md mx-auto mt-10">
-      <h2 class="text-2xl font-bold mb-4">Inscription</h2>
-      <form (ngSubmit)="onSubmit()">
-        <input [(ngModel)]="nom" name="nom" class="w-full p-2 mb-2 border rounded" placeholder="Nom" required />
-        <input [(ngModel)]="prenom" name="prenom" class="w-full p-2 mb-2 border rounded" placeholder="Prénom" required />
-        <input [(ngModel)]="email" name="email" class="w-full p-2 mb-2 border rounded" placeholder="Email" required />
-        <input [(ngModel)]="motDePasse" name="motDePasse" type="password" class="w-full p-2 mb-2 border rounded" placeholder="Mot de passe" required />
-        <input [(ngModel)]="telephone" name="telephone" class="w-full p-2 mb-2 border rounded" placeholder="Téléphone" required />
-        <input [(ngModel)]="adresse" name="adresse" class="w-full p-2 mb-2 border rounded" placeholder="Adresse" required />
-        <select [(ngModel)]="role" name="role" class="w-full p-2 mb-2 border rounded">
-          <option value="ADMIN">ADMIN</option>
-          <option value="USER">USER</option>
-        </select>
-        <button class="p-2 bg-green-600 text-white rounded w-full">S'inscrire</button>
-      </form>
+    <div class="flex justify-center items-center min-h-screen bg-gradient-to-b from-purple-100 to-purple-50">
+      <div class="bg-white p-10 rounded-3xl shadow-2xl w-96 max-w-full animate-fadeIn">
+        <h2 class="text-3xl font-extrabold mb-6 text-center text-purple-700 animate-bounce">Inscription</h2>
+
+        <form (ngSubmit)="onSubmit()" class="space-y-4">
+          <input [(ngModel)]="nom" name="nom" placeholder="Nom" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <input [(ngModel)]="prenom" name="prenom" placeholder="Prénom" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <input [(ngModel)]="email" name="email" placeholder="Email" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <input [(ngModel)]="motDePasse" name="motDePasse" type="password" placeholder="Mot de passe" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <input [(ngModel)]="telephone" name="telephone" placeholder="Téléphone" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <input [(ngModel)]="adresse" name="adresse" placeholder="Adresse" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition" />
+
+          <select [(ngModel)]="role" name="role"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
+          </select>
+
+          <button type="submit"
+                  class="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-300">
+            S'inscrire
+          </button>
+        </form>
+      </div>
     </div>
-  `
+  `,
+  styleUrls: ['register.compoent.scss']
 })
 export class RegisterComponent {
   private auth = inject(AuthService);

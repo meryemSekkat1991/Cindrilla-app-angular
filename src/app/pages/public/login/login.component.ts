@@ -9,15 +9,37 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-login',
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-md mx-auto mt-10">
-      <h2 class="text-2xl font-bold mb-4">Connexion</h2>
-      <form (ngSubmit)="onSubmit()">
-        <input [(ngModel)]="email" name="email" class="w-full p-2 mb-2 border rounded" placeholder="Email" required />
-        <input [(ngModel)]="motDePasse" name="motDePasse" type="password" class="w-full p-2 mb-2 border rounded" placeholder="Mot de passe" required />
-        <button class="p-2 bg-blue-600 text-white rounded w-full">Se connecter</button>
-      </form>
+    <div class="flex justify-center items-center min-h-screen bg-gradient-to-b from-purple-100 to-purple-50">
+      <div class="bg-white p-10 rounded-3xl shadow-2xl w-96 max-w-full animate-fadeIn">
+        <h2 class="text-3xl font-extrabold mb-6 text-center text-purple-700 animate-bounce">Connexion</h2>
+
+        <form (ngSubmit)="onSubmit()" class="space-y-4">
+          <input
+            [(ngModel)]="email"
+            name="email"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            placeholder="Email"
+            required
+          />
+          <input
+            [(ngModel)]="motDePasse"
+            name="motDePasse"
+            type="password"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            placeholder="Mot de passe"
+            required
+          />
+          <button
+            class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition duration-300"
+            type="submit"
+          >
+            Se connecter
+          </button>
+        </form>
+      </div>
     </div>
-  `
+  `,
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   private auth = inject(AuthService);
