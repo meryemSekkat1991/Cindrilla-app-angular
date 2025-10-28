@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gradient-to-b from-purple-100 to-purple-50 flex flex-col items-center">
+
+  <!-- Header -->
+  <header class="w-full py-6 bg-purple-600 text-white text-center shadow-md">
+    <h1 class="text-4xl font-bold animate-bounce">CoiffureApp</h1>
+    <p class="mt-2 text-lg">Découvrez nos services de coiffure facilement</p>
+  </header>
+
+  <!-- Section publique (non authentifié) -->
+  <div class="mt-12 px-6 max-w-5xl w-full" [hidden]="isAuthenticated()">
+    <h2 class="text-3xl font-semibold text-purple-700 mb-6 text-center">Pour tous les visiteurs</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 text-center animate-fadeIn">
+        <h3 class="text-xl font-bold mb-2">Commander un service</h3>
+        <p>Choisissez un service et passez votre commande sans vous authentifier.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 text-center animate-fadeIn delay-100">
+        <h3 class="text-xl font-bold mb-2">Voir nos coiffeurs</h3>
+        <p>Découvrez notre équipe de professionnels et leurs spécialités.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 text-center animate-fadeIn delay-200">
+        <h3 class="text-xl font-bold mb-2">Promotions & nouveautés</h3>
+        <p>Consultez nos offres spéciales et événements du mois.</p>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-8">
+      <button class="bg-purple-500 text-white px-5 py-2 rounded-lg mr-4" (click)="loginAsClient()">Se connecter comme Client</button>
+      <button class="bg-purple-500 text-white px-5 py-2 rounded-lg mr-4" (click)="loginAsCoiffeur()">Se connecter comme Coiffeur</button>
+      <button class="bg-purple-500 text-white px-5 py-2 rounded-lg" (click)="loginAsAdmin()">Se connecter comme Admin</button>
+    </div>
+  </div>
+
+  <!-- Section utilisateur authentifié -->
+  <div class="mt-12 px-6 max-w-5xl w-full text-center" [hidden]="!isAuthenticated()">
+    <h2 class="text-3xl font-semibold text-purple-700 mb-6">
+      Bienvenue, {{ userRole() | titlecase }} !
+    </h2>
+    <p class="mb-4">
+      {{ userRole() === 'COIFFEUR' ? 'Gérez vos rendez-vous et vos clients rapidement.' : '' }}
+      {{ userRole() === 'ADMIN' ? 'Administre l’ensemble de la plateforme.' : '' }}
+      {{ userRole() === 'USER' ? 'Passez vos commandes et suivez vos services.' : '' }}
+    </p>
+    <button class="bg-purple-500 text-white px-5 py-2 rounded-lg hover:bg-purple-600 transition" (click)="logout()">
+      Se déconnecter
+    </button>
+  </div>
+
+</div>

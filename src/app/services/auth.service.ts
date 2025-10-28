@@ -1,65 +1,107 @@
-import { Injectable, signal, inject, NgZone } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private ngZone = inject(NgZone);
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  user = signal<{ username: string; role: 'user' | 'admin' } | null>(null);
+  // Signal to store logged-in user info
+  user = signal<{ email: string; role: string } | null>(null);
 
+  // Backend base URL
+  private apiUrl = 'http://localhost:8080/api/auth';
 
   constructor() {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('auth_user');
       if (raw) {
-        try {
-          this.user.set(JSON.parse(raw));
-        } catch {}
+        try { this.user.set(JSON.parse(raw)); } catch {}
       }
     }
   }
 
-  // simulate server login using HttpClient but ensure we re-enter Angular zone
-  login(username: string, password: string) {
-    // fake request: in a real app call your API
-    // we use setTimeout to simulate async and show NgZone usage
-    return new Promise((resolve) => {
-      // run the "network" outside Angular to avoid unnecessary change detection
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          const result = { username, role: username === 'admin' ? 'admin' : 'user' };
-          // re-enter Angular zone to update signals and localStorage
-          this.ngZone.run(() => {
-            // @ts-ignore
-            this.user.set(result);
-            localStorage.setItem('auth_user', JSON.stringify(result));
-            resolve(result);
-          });
-        }, 600);
-      });
-    });
+  /** LOGIN using backend API **/
+  // async login(email: string, motDePasse: string) {
+  //   try {
+  //     const result: any = await firstValueFrom(
+  //         this.http.post(`${this.apiUrl}/login`, { email, motDePasse })
+  //     );
+  //
+  //     // Backend returns: { accessToken, refreshToken }
+  //     const token = result.accessToken;
+  //     localStorage.setItem('token', token);
+  //
+  //     // Optional: request user info if your backend exposes /me endpoint
+  //     this.user.set({ email, role: 'ADMIN' }); // or fetched role from backend
+  //     localStorage.setItem('auth_user', JSON.stringify(this.user()));
+  //
+  //     return result;
+  //   } catch (err) {
+  //     console.error('Login failed', err);
+  //     throw err;
+  //   }
+  // }
+
+
+  async login(email: string, motDePasse: string) {
+    try {
+      const result: any = await firstValueFrom(
+          this.http.post(`${this.apiUrl}/login`, { email, motDePasse })
+      );
+
+      const token = result.accessToken;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('token', token);
+        this.user.set({ email, role: 'ADMIN' });
+        localStorage.setItem('auth_user', JSON.stringify(this.user()));
+      }
+
+      return result;
+    } catch (err) {
+      console.error('Login failed', err);
+      throw err;
+    }
   }
 
-  register(username: string, password: string) {
-    // simple fake register that just logs in
-    return this.login(username, password);
+
+
+  /** REGISTER a new user **/
+  async register(data: {
+    nom: string;
+    prenom: string;
+    email: string;
+    motDePasse: string;
+    telephone: string;
+    adresse: string;
+    role: string;
+  }) {
+    try {
+      const result = await firstValueFrom(
+          this.http.post(`${this.apiUrl}/register`, data)
+      );
+      return result;
+    } catch (err) {
+      console.error('Register failed', err);
+      throw err;
+    }
   }
 
   logout() {
     this.user.set(null);
     localStorage.removeItem('auth_user');
+    localStorage.removeItem('token');
     this.router.navigate(['/']);
-  }
-
-  isAdmin() {
-    const u = this.user();
-    return !!u && u.role === 'admin';
   }
 
   isLogged() {
     return !!this.user();
+  }
+
+  isAdmin() {
+    const u = this.user();
+    return !!u && u.role === 'ADMIN';
   }
 }
