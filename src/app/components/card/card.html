@@ -1,0 +1,9 @@
+<div class="grid md:grid-cols-3 gap-6">
+  @for (card of cards; track card.title) {
+    <app-card
+      [title]="card.title"
+      [description]="card.description"
+      [delay]="card.delay">
+    </app-card>
+  }
+</div>
